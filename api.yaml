@@ -1,0 +1,24 @@
+# openapi2-run.yaml
+swagger: '2.0'
+info:
+  title: resume-api
+  description: Sample API on API Gateway with a Cloud Run backend
+  version: 1.0.0
+schemes:
+- https
+produces:
+- application/json
+x-google-backend:
+  address: https://hello-xwbo36quyq-as.a.run.app
+
+
+paths:
+  /hits:
+    get:
+      summary: Return number of hits
+      operationId: hits
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string

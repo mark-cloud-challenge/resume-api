@@ -1,4 +1,4 @@
-cloud-sql-python-connector[pymysql]==1.1.0
+Flask==2.2.2
 protobuf==4.21.12
 pymysql==1.0.2
 SQLAlchemy==2.0.0

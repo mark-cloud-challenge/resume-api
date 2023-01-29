@@ -1,5 +1,6 @@
 from connect import connect_with_connector
 from flask import Flask, Response
+import sqlalchemy
 
 app = Flask(__name__)
 

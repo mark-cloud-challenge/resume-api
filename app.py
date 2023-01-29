@@ -12,7 +12,7 @@ def init_db() -> sqlalchemy.engine.base.Engine:
 
 @app.route("/hits", methods=["GET"])
 def get_hits() -> int:
-    with db.connect as conn:
+    with db.connect() as conn:
         hits = conn.execute(
                 "SELECT hits IN counter;"
                 ).fetchone()

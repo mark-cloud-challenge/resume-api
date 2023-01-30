@@ -13,7 +13,7 @@ def init_db() -> sqlalchemy.engine.base.Engine:
 @app.route("/hits", methods=["GET"])
 def get_hits() -> int:
     with db.connect() as conn:
-        query = sqlalchemy.text("SELECT COUNT(visits) FROM counter")
+        query = sqlalchemy.text("SELECT COUNT(visits) FROM visitors")
         hits = conn.execute(query).fetchone()
 
     return hits

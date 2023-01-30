@@ -16,7 +16,7 @@ def get_hits() -> int:
         query = sqlalchemy.text("SELECT COUNT(visits) FROM visitors")
         hits = conn.execute(query).fetchone()
 
-    return str(hits)
+    return { "unique-visitors": hits[0]}
 
 if __name__ == '__main__':
     app.run(port=8080, debug=True)

@@ -30,7 +30,7 @@ def get_hits():
             result = conn.execute(query, ip=ip)
             return { "rows-affected": result.rowcount }
         else:
-            query = sqlalchemy.text("SELECT COUNT(visits) FROM visitors")
+            query = sqlalchemy.text("SELECT COUNT(ip) FROM visitors")
             hits = conn.execute(query).fetchone()
 
             return { "unique-visitors": hits[0]}

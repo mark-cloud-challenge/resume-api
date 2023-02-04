@@ -3,8 +3,8 @@ from flask import Flask, request
 import sqlalchemy
 
 table = "visitors"
-ip-column = "ip"
-visits-column = "visits"
+ip_column = "ip"
+visits_column = "visits"
 
 app = Flask(__name__)
 
@@ -22,7 +22,7 @@ def get_hits():
             ip2int = lambda ip: reduce(lambda a, b: (a << 8) + b, map(int, ip.split('.')), 0)
             ip = ip2int(ip)
 
-            if is_unique(table, ip-column, ip, conn):
+            if is_unique(table, ip_column, ip, conn):
                 query = sqlalchemy.text("INSERT INTO visitors VALUES (:ip, 1)")
             else:
                 query = sqlalchemy.text("UPDATE visitors SET visits=visits+1 WHERE ip=:ip")

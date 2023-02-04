@@ -1,6 +1,7 @@
 from connect import connect_with_connector
 from flask import Flask, request
 import sqlalchemy
+import functools
 
 table = "visitors"
 ip_column = "ip"

@@ -28,7 +28,7 @@ def get_hits():
                 query = sqlalchemy.text("UPDATE visitors SET visits=visits+1 WHERE ip=:ip")
 
             result = conn.execute(query, ip=ip)
-            return { "rows-affected": result[0] }
+            return { "rows-affected": result.rowcount }
         else:
             query = sqlalchemy.text("SELECT COUNT(visits) FROM visitors")
             hits = conn.execute(query).fetchone()

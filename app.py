@@ -38,7 +38,7 @@ def get_hits():
 
 def is_unique(table, column, value, conn):
     query = sqlalchemy.text("SELECT EXISTS(SELECT 1 FROM :table WHERE :column=:value LIMIT 1)")
-    isUnique = conn.execute(query, table=table, column=column, value=value)
+    isUnique = conn.execute(query, table=table, column=column, value=value).fetchone()
 
     return isUnique[0]
 

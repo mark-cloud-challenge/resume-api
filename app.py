@@ -1,6 +1,10 @@
 from connect import connect_with_connector
 from flask import Flask, request
-import sqlalchemy 
+import sqlalchemy
+
+table = "visitors"
+ip-column = "ip"
+visits-column = "visits"
 
 app = Flask(__name__)
 
@@ -12,19 +16,30 @@ def init_db() -> sqlalchemy.engine.base.Engine:
 
 @app.route("/hits", methods=["GET", "POST"])
 def get_hits():
-    if request.method == "POST":
-        ip = request.remote_addr
-        ip2int = lambda ip: reduce(lambda a, b: (a << 8) + b, map(int, ip.split('.')), 0)
-        ip = ip2int(ip)
-        
-        query = sqlalchemy.text("INSERT INTO visitors VALUES (:ip, 1)")
-        conn.execute(query, ip=ip)
-    else:
-        with db.connect() as conn:
+    with db.connect() as conn:
+        if request.method == "POST":
+            ip = request.remote_addr
+            ip2int = lambda ip: reduce(lambda a, b: (a << 8) + b, map(int, ip.split('.')), 0)
+            ip = ip2int(ip)
+
+            if is_unique(table, ip-column, ip, conn):
+                query = sqlalchemy.text("INSERT INTO visitors VALUES (:ip, 1)")
+            else:
+                query = sqlalchemy.text("UPDATE visitors SET visits=visits+1 WHERE ip=:ip")
+
+            result = conn.execute(query, ip=ip)
+            return { "rows-affected": result[0] }
+        else:
             query = sqlalchemy.text("SELECT COUNT(visits) FROM visitors")
             hits = conn.execute(query).fetchone()
 
-        return { "unique-visitors": hits[0]}
+            return { "unique-visitors": hits[0]}
+
+def is_unique(table, column, value, conn):
+    query = sqlalchemy.text("SELECT EXISTS(SELECT 1 FROM :table WHERE :column=:value LIMIT 1)")
+    isUnique = conn.execute(query, table=table, column=column, value=value)
+
+    return isUnique[0]
 
 if __name__ == '__main__':
     app.run(port=8080, debug=True)

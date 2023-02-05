@@ -17,22 +17,22 @@ def connect_with_connector() -> sqlalchemy.engine.base.Engine:
     # Cloud Secret Manager (https://cloud.google.com/secret-manager) to help
     # keep secrets safe.
 
-    instance_connection_name = os.environ["INSTANCE_CONNECTION_NAME"]  # e.g. 'project:region:instance'
+    db_host = os.environ["INSTANCE_HOST"]
     db_user = os.environ.get("DB_USER", "")  # e.g. 'my-db-user'
     db_pass = os.environ["DB_PASS"]  # e.g. 'my-db-password'
     db_name = os.environ["DB_NAME"]  # e.g. 'my-database'
-    unix_socket_path = os.environ["INSTANCE_UNIX_SOCKET"]
-
+    db_port = os.environ["DB_PORT"]
 
     pool = sqlalchemy.create_engine(
         # Equivalent URL:
-        # mysql+pymysql://<db_user>:<db_pass>@/<db_name>?unix_socket=<socket_path>/<cloud_sql_instance_name>
+        # mysql+pymysql://<db_user>:<db_pass>@<db_host>:<db_port>/<db_name>
         sqlalchemy.engine.url.URL.create(
             drivername="mysql+pymysql",
             username=db_user,
             password=db_pass,
             database=db_name,
-            query={"unix_socket": unix_socket_path},
+            host=db_host,
+            port=db_port,
         ),# [START_EXCLUDE]
         # Pool size is the maximum number of permanent connections to keep.
         pool_size=5,

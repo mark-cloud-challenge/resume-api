@@ -30,7 +30,7 @@ paths:
     post:
       summary: Add 1 to total visits of unique ip
       operationId: addHits
-      response:
+      responses:
         '200':
           description: Successfully added hit
           schema:

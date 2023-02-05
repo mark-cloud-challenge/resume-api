@@ -16,9 +16,27 @@ paths:
   /hits:
     get:
       summary: Return number of hits
-      operationId: hits
+      operationId: getHits
       responses:
         '200':
           description: A successful response
           schema:
-            type: string
+            type: object
+            properties:
+              name:
+                type: string
+              count:
+                type: integer
+    post:
+      summary: Add 1 to total visits of unique ip
+      operationId: addHits
+      response:
+        '200':
+          description: Successfully added hit
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              count:
+                type: integer

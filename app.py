@@ -39,8 +39,7 @@ def get_hits():
 def is_unique(value, conn):
     query = sqlalchemy.text("SELECT EXISTS(SELECT 1 FROM visitors WHERE ip=:value LIMIT 1)")
     isUnique = conn.execute(query, {"value": value}).fetchone()
-
-    return isUnique[0]
+    return not isUnique[0]
 
 if __name__ == '__main__':
     app.run(port=8080, debug=True)

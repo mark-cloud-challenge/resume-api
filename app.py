@@ -2,6 +2,7 @@ from connect import connect_with_connector
 from flask import Flask, request
 import sqlalchemy
 from functools import reduce
+import re
 
 table = "visitors"
 ip_column = "ip"
@@ -19,7 +20,7 @@ def init_db() -> sqlalchemy.engine.base.Engine:
 def get_hits():
     with db.connect() as conn:
         if request.method == "POST":
-            ip = request.remote_addr
+            ip = re.search(r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})', request.headers['X_FORWARDED_FOR']).group(0)
             ip2int = lambda ip: reduce(lambda a, b: (a << 8) + b, map(int, ip.split('.')), 0)
             ip = ip2int(ip)
 
